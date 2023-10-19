@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat em Tempo Real</title>
+</head>
+<body>
+  <h1>Chat em Tempo Real</h1>
+  <input type="text" id="message" placeholder="Digite uma mensagem">
+  <button onclick="sendMessage()">Enviar</button>
+  <div id="chat"></div>
+
+  <script>
+    const socket = new WebSocket('ws://localhost:8080');
+
+    socket.onmessage = (event) => {
+      const message = document.createElement('p');
+      message.textContent = event.data;
+      document.getElementById('chat').appendChild(message);
+    };
+
+    function sendMessage() {
+      const messageInput = document.getElementById('message');
+      const message = messageInput.value;
+      socket.send(message);
+      messageInput.value = '';
+    }
+  </script>
+</body>
+</html>
